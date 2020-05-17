@@ -1,0 +1,10 @@
+# show the date and time as two different widgets
+for CLK in date time; do
+  FACE=$(echo "$XRES" | grep "xclock.${CLK}Face" | xargs | \
+    cut -d ' ' -f 2-)
+  GEOM=$(echo "$XRES" | grep "xclock.${CLK}Geom" | xargs | \
+    cut -d ' ' -f 2-)
+  STR=$(echo "$XRES"  | grep "xclock.${CLK}Str" | xargs | \
+    cut -d ' ' -f 2-)
+  xclock -face "$FACE" -geometry "$GEOM" -strftime "$STR" &
+done 
