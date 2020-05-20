@@ -1,0 +1,65 @@
+#tmux scripting
+#C-m -> Enter key
+#gym_app_python -> name of the script
+#'cd~/gym_app_python' -> my project directory
+
+# -- general set up -- #
+#select layout ?!? to recheck
+tmux select-layout -t gym_app_python main-horizontal
+
+#1st window
+#new session 'gym_app_python' 1st window named 'console'
+tmux new-session -s gym_app_python -n console -d
+
+#split window horizontal
+tmux split-window -v -t gym_app_python
+
+#open vim 1st pane and cd into tmp dir
+tmux send-keys -t gym_app_python:1.1 'cd /tmp' C-m
+tmux send-keys -t gym_app_python:1.1 'vim' C-m
+
+#cd into the tmp folder on 2nd pane
+tmux send-keys -t gym_app_python:1.2 'cd /tmp && clear' C-m
+tmux send-keys -t gym_app_python:1.2 'python3' C-m
+# -- end 1st window -- #
+
+
+#2nd window
+#create a new window named 'database'
+#cd into project's dir
+#sqlite3 cmd ready
+tmux new-window -n database -t gym_app_python
+tmux split-window -v -t gym_app_python
+
+tmux send-keys -t gym_app_python:2.1 'man sqlite3' C-m
+
+tmux send-keys -t gym_app_python:2.2 'cd ~/gym_app_python' C-m
+tmux send-keys -t gym_app_python:2.2 'sqlite3 GYM_DATABASE.db' C-m
+# -- end 2nd window -- #
+
+
+# -- 3rd window -- #
+#window split in 2 planes, no file open
+tmux new-window -n main -t gym_app_python
+tmux split-window -v -t gym_app_python
+tmux send-keys -t gym_app_python:3.1 'cd ~/gym_app_python && clear' C-m
+tmux send-keys -t gym_app_python:3.2 'cd ~/gym_app_python && clear' C-m
+# -- end 3rd window -- #
+
+
+# -- 4th window -- #
+#window split in 2 planes, no file open
+tmux new-window -n menu -t gym_app_python
+tmux split-window -v -t gym_app_python
+tmux send-keys -t gym_app_python:4.1 'cd ~/gym_app_python && clear' C-m
+tmux send-keys -t gym_app_python:4.2 'cd ~/gym_app_python && clear' C-m
+# -- end 4th window -- #
+
+# -- 5th window -- #
+tmux new-window -n menu -t gym_app_python
+tmux send-keys -t gym_app_python:5 'vim ~/Documents/notes_gym_app_python && clear' C-m
+# -- end 5th window -- #
+
+#display 1st window when starting up
+tmux select-window -t gym_app_python:1
+tmux attach -t gym_app_python
